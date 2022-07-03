@@ -1,0 +1,38 @@
+import cv2
+import imutils
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+#pre-processamento
+path = "/content/pen4.jpg"
+img = cv2.imread(path)
+blur = cv2.medianBlur(img, 95)
+gray = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
+
+#segmentação
+dilated = cv2.dilate(gray, (10,10))
+_, thresh = cv2.threshold(dilated, 120, 255, cv2.THRESH_BINARY_INV)
+
+#interpretação
+contours = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+contours = imutils.grab_contours(contours)
+
+#display
+images = {
+  'Original': cv2.imread(path),
+  'Blur': blur,
+  'Gray': gray,
+  'Dilated': dilated,
+  'Thresh': thresh,
+}
+
+pens = str(len(contours))
+
+print ('Canetas encontradas: ', pens)
+
+fig, axis = plt.subplots(1, 5)
+for index, (label, image) in enumerate(images.items()):
+    axis[index].imshow(image)
+    axis[index].set_title(label)
+plt.show()
