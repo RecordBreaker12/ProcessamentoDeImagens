@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 #pre-processamento
-path = "/pen4.jpg"
+path = "/images/pen4.jpg"
 img = cv2.imread(path)
 blur = cv2.medianBlur(img, 95)
 gray = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
